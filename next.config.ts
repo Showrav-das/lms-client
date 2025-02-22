@@ -3,9 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "5001", // Update this based on your backend server port
+        protocol: "https",
+        hostname: "lms-server-mmiv.onrender.com",
         pathname: "/uploads/**",
       },
     ],
