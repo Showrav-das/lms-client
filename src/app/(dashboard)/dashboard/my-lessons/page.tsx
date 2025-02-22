@@ -24,7 +24,9 @@ export default function page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/api/courses");
+        const res = await axios.get(
+          "https://lms-server-mmiv.onrender.com/api/courses"
+        );
         setProducts(res.data.courses);
       } catch (error) {
         console.error(error);

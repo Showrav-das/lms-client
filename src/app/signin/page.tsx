@@ -23,7 +23,7 @@ export default function page() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/login",
+        "https://lms-server-mmiv.onrender.com/api/login",
         formData
       );
 

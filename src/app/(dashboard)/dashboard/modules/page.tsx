@@ -20,7 +20,9 @@ export default function page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/api/courses");
+        const res = await axios.get(
+          "https://lms-server-mmiv.onrender.com/api/courses"
+        );
         setProducts(res.data.courses);
       } catch (error) {
         console.error(error);
@@ -46,7 +48,7 @@ export default function page() {
     console.log("e", formData);
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/module",
+        "https://lms-server-mmiv.onrender.com/api/module",
         formData
       );
       //   if (response.status === 201) {
