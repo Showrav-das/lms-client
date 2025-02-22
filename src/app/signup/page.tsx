@@ -1,7 +1,7 @@
-import Courses from "@/components/Courses";
 import RegistrationForm from "@/components/RegistrationForm";
+import React from "react";
 
-export default function Home() {
+export default function page() {
   return (
     <div>
       <RegistrationForm />
