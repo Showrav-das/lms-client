@@ -18,7 +18,7 @@ interface CoursesProps {
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
-export default function page() {
+export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {

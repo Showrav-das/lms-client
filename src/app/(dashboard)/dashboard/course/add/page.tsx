@@ -1,7 +1,7 @@
 import AddCourse from "@/components/AddCourse";
 import React from "react";
 
-export default function page() {
+export default function Page() {
   return (
     <div>
       <AddCourse />
