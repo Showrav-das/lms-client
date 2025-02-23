@@ -25,7 +25,7 @@ export default function RegistrationForm() {
     console.log("formdata", formData);
     try {
       const response = await axios.post(
-        "https://lms-server-mmiv.onrender.com/api/register",
+        "http://localhost:5001/api/register",
         formData
       );
       if (response.status === 201) {

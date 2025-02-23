@@ -21,7 +21,7 @@ export default function page() {
     const fetchCourse = async () => {
       try {
         const response = await axios.get(
-          `https://lms-server-mmiv.onrender.com/api/course/${params.id}`
+          `http://localhost:5001/api/course/${params.id}`
         );
         console.log("first", response.data.course);
         setCourse(response.data.course);

@@ -30,7 +30,7 @@ const Courses: React.FC<CoursesProps> = ({ products = [], setProducts }) => {
   const handleDelete = async (id: string) => {
     try {
       const response = await axios.delete(
-        `https://lms-server-mmiv.onrender.com/api/course/${id}`,
+        `http://localhost:5001/api/course/${id}`,
         {
           data: { id },
           headers: {
@@ -70,10 +70,7 @@ const Courses: React.FC<CoursesProps> = ({ products = [], setProducts }) => {
                   alt="Instructor Image"
                   className="mx-auto"
                   height={240}
-                  src={`https://lms-server-mmiv.onrender.com/${product.image.replace(
-                    "\\",
-                    "/"
-                  )}`}
+                  src={product?.image}
                   width={240}
                 />
               </div>
