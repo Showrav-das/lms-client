@@ -15,6 +15,16 @@ const nextConfig = {
       },
     ],
   },
+  output: "standalone",
+  experimental: {
+    appDir: true,
+    serverActions: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  basePath: "",
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
