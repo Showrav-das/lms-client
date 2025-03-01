@@ -30,7 +30,7 @@ const Courses: React.FC<CoursesProps> = ({ products = [], setProducts }) => {
   const handleDelete = async (id: string) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5001/api/course/${id}`,
+        `https://lms-server-mmiv.onrender.com/api/course/${id}`,
         {
           data: { id },
           headers: {
@@ -44,6 +44,7 @@ const Courses: React.FC<CoursesProps> = ({ products = [], setProducts }) => {
           prevProducts.filter((product) => product._id !== id)
         );
         console.log("Product deleted");
+        alert("Course deleted successfully");
       }
     } catch (error) {
       console.error("Error deleting product", error);

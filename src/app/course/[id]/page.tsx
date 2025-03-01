@@ -5,23 +5,24 @@ import { useEffect, useState } from "react";
 
 export default function page() {
   const [isModuleExpanded, setIsModuleExpanded] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState("");
   interface Course {
     title: string;
     modules: { moduleNumber: number; title: string; answer: string }[];
   }
 
   const [course, setCourse] = useState<Course | null>(null);
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const params = useParams();
+  const [expandedModuleIndex, setExpandedModuleIndex] = useState(null);
 
-  const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+  const toggleModule = (index) => {
+    setExpandedModuleIndex(expandedModuleIndex === index ? null : index);
   };
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/course/${params.id}`
+          `https://lms-server-mmiv.onrender.com/api/course/${params.id}`
         );
         console.log("first", response.data.course);
         setCourse(response.data.course);
@@ -42,23 +43,18 @@ export default function page() {
           <div className="relative aspect-video bg-black mb-8">
             {/* Video controls bar */}
             <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <button className="text-white hover:text-gray-300">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-                <span className="text-sm">0:02 / 11:45</span>
-              </div>
+              {selectedVideo ? (
+                <iframe
+                  className="w-full h-full"
+                  src={selectedVideo}
+                  title="Lecture Video"
+                  // allowFullScreen
+                ></iframe>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  Select a lecture to watch
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -120,23 +116,21 @@ export default function page() {
           </div>
 
           {/* Module section */}
-          <div className="p-4">
+          <div>
             {course?.modules.map((module, i) => (
-              // <Module key={i} module={module} />
-              <div key={i}>
+              <div key={i} className="p-4 border-b">
+                {/* Module Title Button */}
                 <button
-                  onClick={() => setIsModuleExpanded(!isModuleExpanded)}
-                  className="w-full flex items-center justify-between mb-4"
+                  onClick={() => toggleModule(i)}
+                  className="w-full flex items-center justify-between p-2  rounded-lg"
                 >
-                  <div>
-                    <h2 className="text-lg font-medium">
-                      Module {module.moduleNumber}: {module.title}
-                    </h2>
-                  </div>
+                  <h2 className="text-lg font-medium">
+                    Module {module.moduleNumber}: {module.title}
+                  </h2>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className={`h-5 w-5 transform transition-transform ${
-                      isModuleExpanded ? "rotate-180" : ""
+                      expandedModuleIndex === i ? "rotate-180" : ""
                     }`}
                     fill="none"
                     viewBox="0 0 24 24"
@@ -150,69 +144,49 @@ export default function page() {
                     />
                   </svg>
                 </button>
+
+                {/* Lecture List - Shown Only When Module is Expanded */}
+                {expandedModuleIndex === i && (
+                  <div className="ml-4 mt-2">
+                    {module?.lectures.map((lecture, j) => (
+                      <div
+                        onClick={() => setSelectedVideo(lecture.videoUrl)}
+                        key={j}
+                        className="p-2 border-l "
+                      >
+                        <h3 className="text-md font-semibold">
+                          {lecture.title}
+                        </h3>
+                        <a
+                          href={lecture.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 underline"
+                        >
+                          Watch Video
+                        </a>
+                        {lecture.notes.length > 0 && (
+                          <div className="mt-1">
+                            <p className="font-semibold">Notes:</p>
+                            {lecture.notes.map((note, k) => (
+                              <a
+                                key={k}
+                                href={note}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-green-500 block"
+                              >
+                                Download PDF {k + 1}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
-            <button
-              onClick={() => setIsModuleExpanded(!isModuleExpanded)}
-              className="w-full flex items-center justify-between mb-4"
-            >
-              <div>
-                <h2 className="text-lg font-medium">
-                  Module 01: Introduction to redux
-                </h2>
-                <div className="text-sm text-white/70">1 h 58 m • 1/11</div>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-5 w-5 transform transition-transform ${
-                  isModuleExpanded ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-
-            {/* Lesson list */}
-            <div id="accordion-collapse">
-              {course?.modules.map((item, index) => (
-                <div key={index} className="my-3">
-                  <div
-                    onClick={() => toggleAccordion(index)}
-                    className="flex items-center justify-between"
-                  >
-                    <button type="button" aria-expanded={openIndex === index}>
-                      {item.title}
-                    </button>
-                    <svg
-                      data-accordion-icon
-                      className={`w-3 h-3 transition-transform ${
-                        openIndex === index ? "rotate-180" : ""
-                      }`}
-                      viewBox="0 0 10 6"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 5 5 1 1 5"
-                      />
-                    </svg>
-                  </div>
-                  <div className={`${openIndex === index ? "" : "hidden"}`}>
-                    <p>{item.answer}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

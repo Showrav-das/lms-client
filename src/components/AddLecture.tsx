@@ -54,7 +54,9 @@ export default function AddLecture() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/api/courses");
+        const res = await axios.get(
+          "https://lms-server-mmiv.onrender.com/api/courses"
+        );
         setCourses(res.data.courses);
         console.log("first", res.data.courses);
         res.data.courses.map((course: Product) => setModules(course.modules));
@@ -98,7 +100,7 @@ export default function AddLecture() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/lecture",
+        "https://lms-server-mmiv.onrender.com/api/lecture",
         data,
         {
           headers: {

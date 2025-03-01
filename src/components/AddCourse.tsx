@@ -51,7 +51,7 @@ export default function AddCourse() {
     console.log("data", data);
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/courses",
+        "https://lms-server-mmiv.onrender.com/api/courses",
         data,
         {
           headers: { "Content-Type": "multipart/form-data" },

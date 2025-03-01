@@ -69,7 +69,7 @@ export default function EditCourseModal({
     console.log("selectedCourse", data, formData);
     try {
       const response = await axios.put(
-        `http://localhost:5001/api/course/${selectedCourse._id}`,
+        `https://lms-server-mmiv.onrender.com/api/course/${selectedCourse._id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
